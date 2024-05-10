@@ -5,32 +5,51 @@ import java.sql.SQLException;
 
 public class LoginUser {
 
-    public User loginUser(String username, String password) {
-        String sql = "SELECT username, password FROM users WHERE username = ?";
+    /**
+     * Attempts to log in a user with the provided username and password.
+     * @param username the user's username
+     * @param plainTextPassword the user's plain text password
+     * @return User object if login is successful, null otherwise
+     */
+    public User loginUser(String username, String plainTextPassword) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
 
-        try (Connection conn = DBC_connection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try {
+            conn = DBC_connection.getConnection();  // Assuming DBC_connection is your database connection class
+            String sql = "SELECT username, password FROM users WHERE username = ?";  // Adjust table and column names as necessary
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, username);
 
-            pstmt.setString(1, username);
-            ResultSet rs = pstmt.executeQuery();
+            rs = stmt.executeQuery();
 
-            if (!rs.next()) {
-                System.out.println("No user found with the username: " + username);
-                return null;
-            } else {
-                String storedPassword = rs.getString("password");
-                if (PasswordUtil.checkPassword(password, storedPassword)) {
-                    System.out.println("Login successful for user: " + username);
-                    return new User(rs.getString("username"));
+            if (rs.next()) {
+                String storedHashedPassword = rs.getString("password");
+                // Check the password
+                if (PasswordUtil.checkPassword(plainTextPassword, storedHashedPassword)) {
+                    return new User(username);  // Assuming User constructor takes username. Adjust as needed.
                 } else {
-                    System.out.println("Password mismatch for user: " + username);
+                    System.out.println("Password does not match.");
                     return null;
                 }
+            } else {
+                System.out.println("No user found with that username.");
+                return null;
             }
         } catch (SQLException e) {
-            System.err.println("SQL Exception while logging in: " + e.getMessage());
+            System.out.println("SQL Exception: " + e.getMessage());
             e.printStackTrace();
             return null;
+        } finally {
+            // Close resources to prevent resource leaks
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException ex) {
+                System.out.println("SQL Exception on close: " + ex.getMessage());
+            }
         }
     }
 }

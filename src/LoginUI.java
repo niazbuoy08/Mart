@@ -109,15 +109,17 @@ public class LoginUI {
      private void attemptLogin() {
           String username = userField.getText();
           char[] password = passField.getPassword();
+          String passwordString = new String(password);
 
-          User user = new LoginUser().loginUser(username, new String(password));
-          if (user != null) {  // Check if a User object was returned
+          User user = new LoginUser().loginUser(username, passwordString);
+          if (user != null) {
                JOptionPane.showMessageDialog(frame, "Login successful!");
-               frame.dispose(); // Close the login window
-               new HomeUI().display(); // Open the home page window
+               frame.dispose();
+               new HomeUI().display();
           } else {
                JOptionPane.showMessageDialog(frame, "Invalid username or password.");
-               passField.setText(""); // Clear the password field
+               passField.setText("");
           }
      }
+
 }
