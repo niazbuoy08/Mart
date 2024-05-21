@@ -30,7 +30,7 @@ public class LoginUI {
           leftPanel.setBackground(new Color(0, 153, 153)); // Custom purple color
           leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
-          JLabel label = new JLabel("Unique Mart");
+          JLabel label = new JLabel("RadiantSkin");
           label.setForeground(Color.WHITE);
           label.setFont(new Font("Serif", Font.BOLD, 24));
           label.setAlignmentX(Component.CENTER_ALIGNMENT);
