@@ -9,6 +9,7 @@ public class AddProductUI {
     private JTextField nameField;
     private JTextField descriptionField;
     private JTextField priceField;
+    private JTextField reorderthresholdField;
 
     public AddProductUI() {
         frame = new JFrame("Add Product Page");
@@ -38,6 +39,8 @@ public class AddProductUI {
         descriptionField = new JTextField();
         JLabel priceLabel = new JLabel("Price:");
         priceField = new JTextField();
+        JLabel reorderthresholdLabel = new JLabel("Quantity:");
+        reorderthresholdField = new JTextField();
 
         // Add components to the panel
         panel.add(idLabel);
@@ -48,6 +51,8 @@ public class AddProductUI {
         panel.add(descriptionField);
         panel.add(priceLabel);
         panel.add(priceField);
+        panel.add(reorderthresholdLabel);
+        panel.add(reorderthresholdField);
 
         return panel;
     }
@@ -56,24 +61,32 @@ public class AddProductUI {
         JPanel panel = new JPanel(new FlowLayout());
 
         // Button to submit product
-        JButton submitButton = new JButton("Submit");
+        JButton submitButton = new JButton("Add");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Retrieve values from text fields
-                int productId = Integer.parseInt(idField.getText());
-                String productName = nameField.getText();
-                String productDescription = descriptionField.getText();
-                double productPrice = Double.parseDouble(priceField.getText());
+                try {
+                    // Retrieve values from text fields
+                    int productId = Integer.parseInt(idField.getText());
+                    String productName = nameField.getText();
+                    String productDescription = descriptionField.getText();
+                    double productPrice = Double.parseDouble(priceField.getText());
+                    int reorder = Integer.parseInt(reorderthresholdField.getText());
 
-                // Call method to add product to inventory using the entered product information
-                addProduct(productId, productName, productDescription, productPrice);
+                    // Call method to add product to inventory using the entered product information
+                    ProductManagement.addProduct(productId, productName, productDescription, productPrice, reorder);
+                    JOptionPane.showMessageDialog(frame, "Product added successfully!");
 
-                // Clear input fields
-                idField.setText("");
-                nameField.setText("");
-                descriptionField.setText("");
-                priceField.setText("");
+
+                    // Clear input fields
+                    idField.setText("");
+                    nameField.setText("");
+                    descriptionField.setText("");
+                    priceField.setText("");
+                    reorderthresholdField.setText("");
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frame, "Please enter valid values.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -94,8 +107,8 @@ public class AddProductUI {
         return panel;
     }
 
-    // Method to add a product to the inventory (sample implementation)
-    private void addProduct(int productId, String productName, String productDescription, double productPrice) {
+    // Method to add a product to the inventory
+    private void addProduct(int productId, String productName, String productDescription, double productPrice, int reorderThreshold) {
         // Implement logic to add product to inventory
         // This is just a placeholder method, you need to replace it with your actual implementation
         System.out.println("Adding product to inventory:");
@@ -103,6 +116,7 @@ public class AddProductUI {
         System.out.println("Name: " + productName);
         System.out.println("Description: " + productDescription);
         System.out.println("Price: " + productPrice);
+        System.out.println("Reorder Threshold: " + reorderThreshold);
     }
 
     public void display() {

@@ -1,11 +1,9 @@
 import java.sql.Connection;
 import java.sql.CallableStatement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
-public class PurchaseOrderManagement {
+public class RestockInventoryManagement {
     private static final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521:xe";
     private static final String USERNAME = "Mart";
     private static final String PASSWORD = "niaz08";
@@ -22,13 +20,18 @@ public class PurchaseOrderManagement {
                 stmt.setInt(5, quantity);
                 stmt.setDouble(6, purchasePrice);
                 stmt.executeUpdate();
-                System.out.println("Purchase order recorded successfully.");
+                System.out.println("Product restocked successfully.");
             }
 
 
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (e.getErrorCode() == 20001) {
+                System.out.println(e.getMessage());
+
+            } else {
+                e.printStackTrace();
+            }
         }
     }
 

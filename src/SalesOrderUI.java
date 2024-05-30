@@ -15,7 +15,7 @@ public class SalesOrderUI {
     private JTextField orderDateField;
 
     public SalesOrderUI() {
-        frame = new JFrame("Sales Order Page");
+        frame = new JFrame("Sell Product");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Dispose only this frame on close
         frame.setSize(600, 400);
         frame.setLocationRelativeTo(null);
@@ -64,7 +64,7 @@ public class SalesOrderUI {
         JPanel panel = new JPanel(new FlowLayout());
 
         // Button to submit sales order
-        JButton submitButton = new JButton("Submit");
+        JButton submitButton = new JButton("Order");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -77,6 +77,7 @@ public class SalesOrderUI {
 
                     SalesOrderManagement sales = new SalesOrderManagement();
                     sales.recordSalesOrder(orderID, customerID, productID, quantity, orderDate);
+                    JOptionPane.showMessageDialog(frame, "Products sold successfully!");
 
                     // Clear input fields
                     orderIDField.setText("");

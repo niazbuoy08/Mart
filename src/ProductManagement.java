@@ -1,21 +1,12 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductManagement {
-
-
-    static final String JDBC_URL = "jdbc:oracle:thin:@localhost:1521:XE"; // Update with your database URL
-    static final String USERNAME = "Mart";
-    static final String PASSWORD = "niaz08";
-
-
     public static void addProduct(int productId, String name, String description, double price,int reorderThreshold) {
         String query = "INSERT INTO Products (Product_ID, Name, Description, Price,Reorder_Threshold) VALUES (?, ?, ?, ?,?)";
 
-        try (Connection conn = DBC_connection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = DBC_connection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, productId);
             stmt.setString(2, name);
             stmt.setString(3, description);
@@ -30,8 +21,34 @@ public class ProductManagement {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
-    public void updateProduct(int productId, String newName, String newDescription, double newPrice,int newReorderThreshold) {
+
+    public static List<Product> getProducts() {
+        List<Product> products = new ArrayList<>();
+        String query = "SELECT * FROM Products";
+
+        try (Connection conn = DBC_connection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                int productId = rs.getInt("Product_ID");
+                String name = rs.getString("Name");
+                String description = rs.getString("Description");
+                double price = rs.getDouble("Price");
+                int reorderThreshold = rs.getInt("Reorder_Threshold");
+
+                Product product = new Product(productId, name, description, price, reorderThreshold);
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return products;
+    }
+    public void updateProduct(int productId, String newName, String newDescription, int newPrice,int newReorderThreshold) {
         String query = "UPDATE Products SET Name = ?, Description = ?, Price = ?,Reorder_Threshold=? WHERE Product_ID = ?";
 
         try (Connection conn = DBC_connection.getConnection();

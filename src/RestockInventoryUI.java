@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
-public class PurchaseOrderUI {
+public class RestockInventoryUI {
     private JFrame frame;
     private JTextField orderIDField;
     private JTextField supplierIDField;
@@ -14,8 +14,8 @@ public class PurchaseOrderUI {
     private JTextField quantityField;
     private JTextField purchasePriceField;
 
-    public PurchaseOrderUI() {
-        frame = new JFrame("Purchase Order Page");
+    public RestockInventoryUI() {
+        frame = new JFrame("Restock Inventory");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Dispose only this frame on close
         frame.setSize(600, 400);
         frame.setLocationRelativeTo(null);
@@ -68,7 +68,7 @@ public class PurchaseOrderUI {
         JPanel panel = new JPanel(new FlowLayout());
 
         // Button to submit purchase order
-        JButton submitButton = new JButton("Submit");
+        JButton submitButton = new JButton("Restock");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -80,8 +80,9 @@ public class PurchaseOrderUI {
                     int quantity = Integer.parseInt(quantityField.getText());
                     double purchasePrice = Double.parseDouble(purchasePriceField.getText());
 
-                    PurchaseOrderManagement purchase = new PurchaseOrderManagement();
+                    RestockInventoryManagement purchase = new RestockInventoryManagement();
                     purchase.recordPurchaseOrder(orderID, supplierID, purchaseDate, productID, quantity, purchasePrice);
+                    JOptionPane.showMessageDialog(frame, "Product restocked successfully!");
 
                     // Clear input fields
                     orderIDField.setText("");

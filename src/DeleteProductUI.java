@@ -51,6 +51,7 @@ public class DeleteProductUI {
                 // Call method to delete product using the entered product ID
                 ProductManagement product = new ProductManagement();
                 product.deleteProduct(productIdToDelete);
+                JOptionPane.showMessageDialog(frame, "Product deleted successfully!");
 
                 // Clear input fields
                 deleteIdField.setText("");

@@ -39,7 +39,7 @@ public class UpdateProductUI {
         newDescriptionField = new JTextField();
         JLabel newPriceLabel = new JLabel("New Price:");
         newPriceField = new JTextField();
-        JLabel newReorderThresholdLabel = new JLabel("New Reorder Threshold:");
+        JLabel newReorderThresholdLabel = new JLabel("New Quantity:");
         newReorderThresholdField = new JTextField();
 
         // Add components to the panel
@@ -69,12 +69,13 @@ public class UpdateProductUI {
                 int productIdToUpdate = Integer.parseInt(updateIdField.getText());
                 String newProductName = newNameField.getText();
                 String newProductDescription = newDescriptionField.getText();
-                double newProductPrice = Double.parseDouble(newPriceField.getText());
+                int newProductPrice = Integer.parseInt(newPriceField.getText());
                 int newReorderThreshold = Integer.parseInt(newReorderThresholdField.getText());
 
                 // Call method to update product using the entered product information
                 ProductManagement product = new ProductManagement();
                 product.updateProduct(productIdToUpdate, newProductName, newProductDescription, newProductPrice, newReorderThreshold);
+                JOptionPane.showMessageDialog(frame, "Product updated successfully!");
 
                 // Clear input fields
                 updateIdField.setText("");

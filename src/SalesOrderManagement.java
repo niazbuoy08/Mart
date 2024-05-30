@@ -25,11 +25,15 @@ public class SalesOrderManagement {
 
                 stmt.execute();
 
-                System.out.println("Sales order inserted successfully.");
+
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (e.getErrorCode() == -20001) {
+                System.out.println(e.getMessage());
+            } else {
+                e.printStackTrace();
+            }
         }
     }
 }
